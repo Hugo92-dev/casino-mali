@@ -1,0 +1,117 @@
+---
+import { casinos } from '../data/casinos.js';
+---
+
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <nav class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="text-2xl font-bold text-blue-600">
+        Casino Mali 🎰
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex space-x-8">
+        <!-- Casino en ligne -->
+        <div class="relative group">
+          <a href="/" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 py-5">
+            <span>Casino en ligne</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            {casinos.map((casino) => (
+              <a href={`/avis/${casino.slug}`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                {casino.name}
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Code promo -->
+        <div class="relative group">
+          <a href="#" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 py-5">
+            <span>Code promo</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            {casinos.map((casino) => (
+              <a href={`/code-promo/${casino.slug}`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                {casino.name}
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Application casino -->
+        <div class="relative group">
+          <a href="#" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 py-5">
+            <span>Application casino</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            {casinos.map((casino) => (
+              <a href={`/app/${casino.slug}`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                {casino.name}
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Blog -->
+        <a href="/blog" class="text-gray-700 hover:text-blue-600 py-5">
+          Blog
+        </a>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <button class="md:hidden" id="mobile-menu-button">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="py-2 space-y-1">
+        <a href="/" class="block px-3 py-2 text-gray-700 hover:bg-blue-50">Casino en ligne</a>
+        {casinos.map((casino) => (
+          <a href={`/avis/${casino.slug}`} class="block px-6 py-2 text-sm text-gray-600 hover:bg-blue-50">
+            → {casino.name}
+          </a>
+        ))}
+        <hr class="my-2">
+        <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50">Code promo</a>
+        {casinos.map((casino) => (
+          <a href={`/code-promo/${casino.slug}`} class="block px-6 py-2 text-sm text-gray-600 hover:bg-blue-50">
+            → {casino.name}
+          </a>
+        ))}
+        <hr class="my-2">
+        <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50">Application casino</a>
+        {casinos.map((casino) => (
+          <a href={`/app/${casino.slug}`} class="block px-6 py-2 text-sm text-gray-600 hover:bg-blue-50">
+            → {casino.name}
+          </a>
+        ))}
+        <hr class="my-2">
+        <a href="/blog" class="block px-3 py-2 text-gray-700 hover:bg-blue-50">Blog</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

@@ -1,0 +1,22 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  keywords: string;
+}
+
+const { title, description, keywords } = Astro.props;
+const siteTitle = 'Casino Mali - Comparateur de casinos en ligne';
+---
+
+<title>{title} | {siteTitle}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta property="og:title" content={`${title} | ${siteTitle}`} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_ML" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${title} | ${siteTitle}`} />
+<meta name="twitter:description" content={description} />
+<link rel="canonical" href={Astro.url} />

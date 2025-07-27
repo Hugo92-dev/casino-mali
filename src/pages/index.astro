@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CasinoCard from '../components/CasinoCard.astro';
+import CasinoComparator from '../components/CasinoComparator.astro';
+import { casinos } from '../data/casinos.js';
+
+const sortedCasinos = [...casinos].sort((a, b) => b.rating - a.rating);
+---
+
+<BaseLayout title="Top 5 des meilleurs casinos en ligne au Mali">
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">
+      Meilleurs casinos en ligne au Mali
+    </h1>
+    
+    <!-- Liste des casinos -->
+    <div class="space-y-4">
+      {sortedCasinos.map((casino, index) => (
+        <CasinoCard casino={casino} rank={index + 1} />
+      ))}
+    </div>
+
+    <!-- Section comparateur -->
+    <CasinoComparator />
+
+    <!-- Section de contenu supplémentaire (à ajouter plus tard) -->
+    <div class="mt-12">
+      <!-- Tu pourras ajouter ton contenu ici -->
+    </div>
+  </div>
+</BaseLayout>

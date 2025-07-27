@@ -1,0 +1,880 @@
+---
+import { casinos } from '../data/casinos.js';
+
+// État initial : 1xbet sélectionné par défaut
+---
+
+<section class="mt-16 bg-gray-50 rounded-2xl p-8">
+  <h2 class="text-3xl font-bold text-red-600 mb-4">
+    Comparateur des meilleurs casinos en ligne au Mali
+  </h2>
+  
+  <p class="text-gray-700 mb-8 text-lg">
+    Choisissez un casino en ligne dans la liste suivante et trouvez toutes les informations importantes sur cette marque de casino en un coup d'œil. 
+    Vous pouvez comparer comment nos experts ont évalué les casinos en ligne maliens en détail, mais aussi les bonus, les promotions et les jeux 
+    que chacun offre ou plongez dans les statistiques de chaque opérateur.
+  </p>
+
+  <!-- Barre de sélection -->
+  <div class="bg-white rounded-lg shadow-sm p-4 mb-8">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-2 flex-1">
+        <span class="text-gray-700 font-medium whitespace-nowrap">Choisir un casino</span>
+        <input 
+          type="text" 
+          id="casino-search"
+          placeholder="Rechercher..." 
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+          </svg>
+          Filtres
+        </button>
+        
+        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+          <option>Meilleur classement</option>
+          <option>Note la plus élevée</option>
+          <option>Bonus le plus élevé</option>
+          <option>Plus de jeux</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille des logos de casinos -->
+  <div class="bg-white rounded-lg p-6">
+    <div class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-4" id="casino-grid">
+      {casinos.map((casino, index) => (
+        <button 
+          class={`casino-logo-btn group relative ${index === 0 ? 'active' : 'inactive'}`}
+          data-casino-id={casino.id}
+          data-casino-name={casino.name.toLowerCase()}
+          title={`Voir les détails de ${casino.name}`}
+        >
+          <div class="w-20 h-20 rounded-full bg-gray-900 p-2 group-hover:scale-110 transition-transform cursor-pointer shadow-lg">
+            <img 
+              src={casino.logo} 
+              alt={casino.name}
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <span class="text-xs text-gray-700 mt-2 block text-center font-medium">
+            {casino.name}
+          </span>
+        </button>
+      ))}
+      
+      <!-- Bouton "Plus" pour afficher d'autres casinos -->
+      <button class="group">
+        <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center group-hover:bg-gray-300 transition-colors cursor-pointer">
+          <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+        <span class="text-xs text-gray-700 mt-2 block text-center font-medium">
+          Plus
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Zone de détails du casino (visible par défaut avec 1xbet) -->
+  <div id="casino-details" class="mt-8">
+    <!-- Le contenu de 1xbet sera injecté au chargement -->
+  </div>
+</section>
+
+<style>
+  .casino-logo-btn {
+    @apply transition-opacity;
+  }
+  
+  .casino-logo-btn.inactive {
+    @apply opacity-40;
+  }
+  
+  .casino-logo-btn.active {
+    @apply opacity-100;
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+</style>
+
+<script>
+  // Données complètes des casinos
+  const casinosData = {
+    '1xbet': {
+      name: '1xBet',
+      rating: 4.8,
+      logo: '/images/logos/1xbet.png',
+      established: '2007',
+      bonus: '100% jusqu\'à 130.000 FCFA + 150 Free Spins',
+      bonusTerms: 'Mise minimum 35x • Dépôt min 500 FCFA',
+      review: `1xBet s'est imposé comme l'un des leaders mondiaux des paris en ligne. Avec plus de 400.000 utilisateurs actifs,
+               la plateforme offre une expérience complète alliant paris sportifs et casino en ligne. 
+               L'opérateur se distingue par sa large sélection de jeux, ses cotes compétitives et son application mobile performante.`,
+      pros: [
+        'Immense bibliothèque de plus de 3.000 jeux',
+        'Excellente sélection de jeux avec croupiers en direct',
+        'Large sélection de fournisseurs de jeux',
+        'Paiements rapides'
+      ],
+      cons: [
+        'Interface parfois complexe',
+        'Temps de vérification variable',
+        'Support client perfectible',
+        'Conditions de bonus strictes'
+      ],
+      games: {
+        total: '3000+',
+        slots: '2000+',
+        liveDealer: '150+',
+        tableGames: '100+',
+        jackpots: '50+',
+        providers: ['NetEnt', 'Microgaming', 'Evolution Gaming', 'Pragmatic Play', 'Play\'n GO']
+      },
+      paymentMethods: ['visa', 'mastercard', 'bitcoin', 'ethereum', 'orange-money', 'moov'],
+      stats: {
+        winRate: '97.3%',
+        payoutSpeed: '1-3 jours',
+        minDeposit: '500 FCFA',
+        maxWithdraw: '5.000.000 FCFA/jour',
+        totalGames: '3000+'
+      },
+      bonuses: [
+        {
+          name: 'Bonus de bienvenue',
+          amount: '100% jusqu\'à 130.000 FCFA + 150 Free Spins',
+          code: 'MAX150',
+          wagering: '35x',
+          minDeposit: '500 FCFA'
+        },
+        {
+          name: 'Bonus Casino',
+          amount: '100% jusqu\'à 100.000 FCFA',
+          code: 'CASINO100',
+          wagering: '40x',
+          minDeposit: '1000 FCFA'
+        },
+        {
+          name: 'Cashback VIP',
+          amount: 'Jusqu\'à 11% de cashback',
+          code: 'Automatique',
+          wagering: '3x',
+          minDeposit: 'N/A'
+        }
+      ],
+      gallery: [
+        'Interface principale',
+        'Section casino live',
+        'Application mobile',
+        'Promotions page'
+      ],
+      alternatives: ['Melbet', 'BetWinner', '22Bet'],
+      affiliateUrl: 'https://1xbet.com/ml' // 👈 Remplace par ton vrai lien
+    },
+    'melbet': {
+      name: 'Melbet',
+      rating: 4.7,
+      logo: '/images/logos/melbet.png',
+      established: '2012',
+      bonus: '100% jusqu\'à 100.000 FCFA + 100 Free Spins',
+      bonusTerms: 'Mise minimum 40x • Dépôt min 1000 FCFA',
+      review: `Melbet est une plateforme de jeux en ligne complète qui offre une expérience exceptionnelle aux joueurs maliens.
+               Avec une interface intuitive et un support client en français, Melbet s'est rapidement imposé comme un choix populaire.`,
+      pros: [
+        'Support client 24/7 en français',
+        'Streaming en direct disponible',
+        'Programme VIP attractif',
+        'Application mobile excellente'
+      ],
+      cons: [
+        'Pas de bonus sans dépôt',
+        'Limite de retrait journalière',
+        'Peu de tournois',
+        'Interface chargée'
+      ],
+      games: {
+        total: '2500+',
+        slots: '1500+',
+        liveDealer: '100+',
+        tableGames: '80+',
+        jackpots: '40+',
+        providers: ['Evolution Gaming', 'Betsoft', 'Yggdrasil', 'Quickspin', 'Red Tiger']
+      },
+      paymentMethods: ['visa', 'mastercard', 'skrill', 'neteller', 'orange-money'],
+      stats: {
+        winRate: '96.8%',
+        payoutSpeed: '1-2 jours',
+        minDeposit: '1000 FCFA',
+        maxWithdraw: '3.000.000 FCFA/jour',
+        totalGames: '2500+'
+      },
+      bonuses: [
+        {
+          name: 'Bonus de bienvenue',
+          amount: '100% jusqu\'à 100.000 FCFA + 100 Free Spins',
+          code: 'PARIS120',
+          wagering: '40x',
+          minDeposit: '1000 FCFA'
+        },
+        {
+          name: 'Bonus du vendredi',
+          amount: '100% jusqu\'à 50.000 FCFA',
+          code: 'FRIDAY',
+          wagering: '35x',
+          minDeposit: '500 FCFA'
+        },
+        {
+          name: 'Tournois hebdomadaires',
+          amount: 'Prize pool 10.000.000 FCFA',
+          code: 'Automatique',
+          wagering: 'N/A',
+          minDeposit: 'Variable'
+        }
+      ],
+      gallery: [
+        'Page d\'accueil',
+        'Section paris sportifs',
+        'Casino en direct',
+        'Interface mobile'
+      ],
+      alternatives: ['1xBet', 'BetWinner', 'Premier Bet'],
+      affiliateUrl: 'https://melbet.com/ml' // 👈 Remplace par ton vrai lien
+    },
+    'premierbet': {
+      name: 'Premier Bet',
+      rating: 4.6,
+      logo: '/images/logos/premierbet.png',
+      established: '2015',
+      bonus: '150% jusqu\'à 75.000 FCFA',
+      bonusTerms: 'Mise minimum 30x • Dépôt min 200 FCFA',
+      review: `Premier Bet est le leader des paris sportifs en Afrique de l'Ouest. Avec une présence forte au Mali,
+               l'opérateur offre une plateforme simple et accessible, parfaite pour les débutants. Les dépôts minimums
+               très bas et l'intégration d'Orange Money en font un choix populaire auprès des joueurs maliens.`,
+      pros: [
+        'Dépôt minimum très bas (200 FCFA)',
+        'Interface simple et intuitive',
+        'Présent localement au Mali',
+        'Orange Money parfaitement intégré'
+      ],
+      cons: [
+        'Moins de jeux que les concurrents',
+        'Pas de casino en direct',
+        'Application basique',
+        'Bonus limités'
+      ],
+      games: {
+        total: '1200+',
+        slots: '800+',
+        liveDealer: '20+',
+        tableGames: '50+',
+        jackpots: '15+',
+        providers: ['Pragmatic Play', 'Spribe', 'Betsoft', 'Habanero']
+      },
+      paymentMethods: ['orange-money', 'moov', 'visa', 'mastercard'],
+      stats: {
+        winRate: '96.5%',
+        payoutSpeed: '1-2 jours',
+        minDeposit: '200 FCFA',
+        maxWithdraw: '1.000.000 FCFA/jour',
+        totalGames: '1200+'
+      },
+      bonuses: [
+        {
+          name: 'Bonus de bienvenue',
+          amount: '150% jusqu\'à 75.000 FCFA',
+          code: 'PREMIER75',
+          wagering: '30x',
+          minDeposit: '200 FCFA'
+        },
+        {
+          name: 'Boost quotidien',
+          amount: '10% sur les combinés',
+          code: 'Automatique',
+          wagering: '1x',
+          minDeposit: '100 FCFA'
+        },
+        {
+          name: 'Jackpot hebdo',
+          amount: 'Jusqu\'à 5.000.000 FCFA',
+          code: 'JACKPOT',
+          wagering: 'N/A',
+          minDeposit: '100 FCFA'
+        }
+      ],
+      gallery: [
+        'Interface simplifiée',
+        'Section paris',
+        'Application mobile',
+        'Points de vente physiques'
+      ],
+      alternatives: ['Bet2Africa', '1xBet', 'Melbet'],
+      affiliateUrl: 'https://premierbet.ml' // 👈 Remplace par ton vrai lien
+    },
+    'betwinner': {
+      name: 'BetWinner',
+      rating: 4.8,
+      logo: '/images/logos/betwinner.png',
+      established: '2018',
+      bonus: '100% jusqu\'à 65.000 FCFA + 200 Free Spins',
+      bonusTerms: 'Mise minimum 35x • Dépôt min 300 FCFA',
+      review: `BetWinner combine parfaitement paris sportifs et casino en ligne. La plateforme se distingue par
+               l'acceptation des cryptomonnaies et ses options de cash out avancées. Avec plus de 2000 jeux disponibles
+               et un streaming en direct, BetWinner offre une expérience complète aux joueurs exigeants.`,
+      pros: [
+        'Cryptomonnaies acceptées',
+        'Cash out disponible',
+        'Streaming en direct HD',
+        'Bonus généreux avec free spins'
+      ],
+      cons: [
+        'Vérification KYC longue',
+        'Interface parfois lente',
+        'Support client moyen',
+        'Retrait crypto taxé'
+      ],
+      games: {
+        total: '2000+',
+        slots: '1800+',
+        liveDealer: '120+',
+        tableGames: '90+',
+        jackpots: '60+',
+        providers: ['NetEnt', 'Evolution Gaming', 'Ezugi', 'Betsoft', 'Endorphina']
+      },
+      paymentMethods: ['bitcoin', 'ethereum', 'visa', 'mastercard', 'orange-money', 'skrill'],
+      stats: {
+        winRate: '97.1%',
+        payoutSpeed: '15 min - 7 jours',
+        minDeposit: '300 FCFA',
+        maxWithdraw: 'Illimité (crypto)',
+        totalGames: '2000+'
+      },
+      bonuses: [
+        {
+          name: 'Bonus de bienvenue',
+          amount: '100% jusqu\'à 65.000 FCFA + 200 Free Spins',
+          code: 'BWIN200',
+          wagering: '35x',
+          minDeposit: '300 FCFA'
+        },
+        {
+          name: 'Bonus crypto',
+          amount: '125% jusqu\'à 100.000 FCFA',
+          code: 'CRYPTO125',
+          wagering: '30x',
+          minDeposit: '0.001 BTC'
+        },
+        {
+          name: 'Accumulator du jour',
+          amount: 'Jusqu\'à 1000% de boost',
+          code: 'Automatique',
+          wagering: '1x',
+          minDeposit: '200 FCFA'
+        }
+      ],
+      gallery: [
+        'Interface moderne',
+        'Section crypto',
+        'Live casino',
+        'Cash out feature'
+      ],
+      alternatives: ['1xBet', 'Melbet', '22Bet'],
+      affiliateUrl: 'https://betwinner.com/ml' // 👈 Remplace par ton vrai lien
+    },
+    'bet2africa': {
+      name: 'Bet2Africa',
+      rating: 4.4,
+      logo: '/images/logos/bet2africa.png',
+      established: '2018',
+      bonus: '100% jusqu\'à 50.000 FCFA',
+      bonusTerms: 'Mise minimum 25x • Dépôt min 500 FCFA',
+      review: `Bet2Africa est un opérateur 100% africain qui comprend parfaitement les besoins des joueurs maliens.
+               Avec un support client en français et bambara, des promotions régulières et une plateforme optimisée
+               pour les connexions lentes, Bet2Africa offre une expérience locale authentique.`,
+      pros: [
+        'Opérateur 100% africain',
+        'Support en français et bambara',
+        'Site optimisé connexions lentes',
+        'Promotions locales régulières'
+      ],
+      cons: [
+        'Application mobile basique',
+        'Moins de jeux internationaux',
+        'Pas de streaming',
+        'Bonus relativement faibles'
+      ],
+      games: {
+        total: '800+',
+        slots: '600+',
+        liveDealer: '15+',
+        tableGames: '30+',
+        jackpots: '10+',
+        providers: ['Pragmatic Play', 'Betsoft', 'Spribe', 'Local Games']
+      },
+      paymentMethods: ['orange-money', 'moov', 'wave', 'airtel-money'],
+      stats: {
+        winRate: '96.2%',
+        payoutSpeed: '24-48h',
+        minDeposit: '500 FCFA',
+        maxWithdraw: '500.000 FCFA/jour',
+        totalGames: '800+'
+      },
+      bonuses: [
+        {
+          name: 'Bonus de bienvenue',
+          amount: '100% jusqu\'à 50.000 FCFA',
+          code: 'Pas de code',
+          wagering: '25x',
+          minDeposit: '500 FCFA'
+        },
+        {
+          name: 'Bonus fidélité',
+          amount: '10% cashback hebdo',
+          code: 'Automatique',
+          wagering: '3x',
+          minDeposit: 'N/A'
+        },
+        {
+          name: 'Promo locale',
+          amount: 'Variable selon événements',
+          code: 'MALI2024',
+          wagering: '20x',
+          minDeposit: '200 FCFA'
+        }
+      ],
+      gallery: [
+        'Page d\'accueil locale',
+        'Promotions africaines',
+        'Support multilingue',
+        'Version mobile'
+      ],
+      alternatives: ['Premier Bet', 'Supabet', 'Betway'],
+      affiliateUrl: 'https://bet2africa.ml' // 👈 Remplace par ton vrai lien
+    }
+  };
+
+  // Gestion des onglets et du contenu
+  let currentTab = 'overview';
+  
+  // Fonction pour générer le HTML de la carte casino
+  function generateCasinoCardHTML(casino, rank) {
+    return `
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+          <!-- Logo et infos du casino -->
+          <div class="flex items-center gap-3 flex-1">
+            <img 
+              src="${casino.logo}" 
+              alt="${casino.name}"
+              class="w-20 h-20 object-contain"
+            />
+            <div>
+              <h3 class="font-bold text-lg text-gray-900">${casino.name}</h3>
+              <a href="/avis/${casino.slug}" class="text-sm text-gray-600 hover:text-blue-600 underline">
+                Avis ${casino.name}
+              </a>
+            </div>
+          </div>
+
+          <!-- Badge de classement et note -->
+          <div class="flex items-center gap-2">
+            <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+              ${rank}
+            </span>
+            <div class="text-center">
+              <div class="flex items-center gap-1">
+                <span class="text-yellow-400">★</span>
+                <span class="font-bold">${casino.rating}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Bonus -->
+          <div class="bg-blue-50 rounded-lg p-4 min-w-[200px]">
+            <div class="text-center">
+              <p class="text-sm text-gray-600 mb-1">Bonus</p>
+              <p class="text-2xl font-bold text-gray-900">${casino.bonusAmount || casino.bonus.split('+')[0].trim()}</p>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="flex-1 max-w-xs">
+            <ul class="space-y-2">
+              ${casino.promoCode ? `
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-0.5">✓</span>
+                  <span class="text-sm text-gray-700">
+                    Code promo : <strong>${casino.promoCode}</strong>
+                  </span>
+                </li>
+              ` : ''}
+              <li class="flex items-start gap-2">
+                <span class="text-green-500 mt-0.5">✓</span>
+                <span class="text-sm text-gray-700">${casino.bonus}</span>
+              </li>
+              ${casino.features ? casino.features.slice(0, 1).map(feature => `
+                <li class="flex items-start gap-2">
+                  <span class="text-green-500 mt-0.5">✓</span>
+                  <span class="text-sm text-gray-700">${feature}</span>
+                </li>
+              `).join('') : ''}
+            </ul>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="flex flex-col gap-3">
+            ${casino.promoCode ? `
+              <div class="text-center">
+                <p class="text-xs text-gray-600 mb-2">Code promo :</p>
+                <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded px-4 py-2 flex items-center gap-2">
+                  <span class="font-bold text-gray-900" id="promo-${casino.id}">${casino.promoCode}</span>
+                  <button class="text-gray-500 hover:text-gray-700 copy-btn" data-code="${casino.promoCode}" data-code-id="promo-${casino.id}" title="Copier le code">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <p class="text-sm text-blue-600 text-center">Pas besoin de code promo</p>
+            `}
+            
+            <a 
+              href="${casino.affiliateUrl || '/code-promo/' + casino.slug}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors"
+            >
+              S'inscrire sur ${casino.name}
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function showCasinoDetails(casino) {
+    const detailsContainer = document.getElementById('casino-details');
+    
+    detailsContainer.innerHTML = `
+      <div class="bg-white rounded-xl shadow-lg p-8 animate-fade-in">
+        <!-- En-tête -->
+        <div class="flex items-start justify-between mb-8">
+          <div class="flex items-center gap-6">
+            <img src="${casino.logo}" alt="${casino.name}" class="w-24 h-24 object-contain">
+            <div>
+              <h3 class="text-3xl font-bold text-gray-900">${casino.name}</h3>
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex text-yellow-400">
+                  ${'★'.repeat(Math.floor(casino.rating))}${'☆'.repeat(5 - Math.floor(casino.rating))}
+                </div>
+                <span class="font-bold">${casino.rating}</span>
+                <span class="text-gray-500">Excellent</span>
+              </div>
+              <p class="text-gray-600 mt-1">🇲🇱 Classé #1 sur 50 au Mali • Établi en ${casino.established}</p>
+            </div>
+          </div>
+          <a href="${casino.affiliateUrl}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors">
+            S'inscrire sur ${casino.name}
+          </a>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-200 mb-6">
+          <div class="flex gap-8 overflow-x-auto">
+            <button class="tab-btn active" data-tab="overview">Vue d'ensemble</button>
+            <button class="tab-btn" data-tab="bonus">Bonus</button>
+            <button class="tab-btn" data-tab="games">Jeux</button>
+            <button class="tab-btn" data-tab="rating">Note</button>
+            <button class="tab-btn" data-tab="stats">Statistiques</button>
+            <button class="tab-btn" data-tab="gallery">Galerie</button>
+            <button class="tab-btn" data-tab="alternatives">Alternatives</button>
+          </div>
+        </div>
+
+        <!-- Contenu des onglets -->
+        <div id="tab-content">
+          <!-- Vue d'ensemble -->
+          <div id="overview-tab" class="tab-content active">
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Avis en 60 secondes -->
+              <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                  🔍 Avis ${casino.name} en 60 secondes
+                </h4>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  ${casino.review}
+                </p>
+              </div>
+
+              <!-- Informations essentielles -->
+              <div class="bg-purple-50 rounded-xl p-6">
+                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                  📊 Informations essentielles
+                </h4>
+                <ul class="space-y-3">
+                  <li class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">• Bonus de bienvenue</span>
+                    <span class="font-bold text-gray-900">${casino.bonus.split('+')[0].trim()}</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">• Nombre de jeux</span>
+                    <span class="font-bold text-gray-900">${casino.stats.totalGames}</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">• Dépôt minimum</span>
+                    <span class="font-bold text-gray-900">${casino.stats.minDeposit}</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">• Délai de retrait</span>
+                    <span class="font-bold text-gray-900">${casino.stats.payoutSpeed}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Pourquoi ce casino est recommandé -->
+              <div class="bg-green-50 rounded-xl p-6">
+                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                  ✅ Pourquoi ce casino est recommandé ?
+                </h4>
+                <ul class="space-y-2">
+                  ${casino.pros.slice(0, 4).map(pro => `
+                    <li class="flex items-start gap-2 text-sm">
+                      <span class="text-green-600 mt-0.5">✓</span>
+                      <span class="text-gray-700">${pro}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+
+              <!-- Méthodes de paiement -->
+              <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                  💳 Méthodes de paiement disponibles
+                </h4>
+                <div class="grid grid-cols-3 gap-3">
+                  ${casino.paymentMethods.map(method => `
+                    <div class="bg-gray-50 rounded-lg p-3 text-center">
+                      <span class="text-sm font-medium text-gray-700">${method}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Jeux populaires -->
+              <div class="bg-white rounded-xl border border-gray-200 p-6 md:col-span-2">
+                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                  🎮 Jeux populaires
+                </h4>
+                <div class="grid grid-cols-6 gap-4">
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Mega Moolah</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Book of Dead</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-green-400 to-teal-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Starburst</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-red-400 to-pink-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Gonzo's Quest</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Sweet Bonanza</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="aspect-square bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg mb-2"></div>
+                    <p class="text-xs font-medium">Gates of Olympus</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Onglet Bonus -->
+          <div id="bonus-tab" class="tab-content">
+            <!-- Carte du casino réutilisée -->
+            <div class="mb-8">
+              <div id="casino-card-container-${casino.id}">
+                <!-- La carte sera insérée ici par JavaScript -->
+              </div>
+            </div>
+            
+            <!-- Contenu additionnel des bonus à ajouter ici -->
+          </div>
+
+          <!-- Onglet Jeux -->
+          <div id="games-tab" class="tab-content">
+            <!-- Contenu vide pour l'instant -->
+          </div>
+
+          <!-- Onglet Note -->
+          <div id="rating-tab" class="tab-content">
+            <!-- Contenu vide pour l'instant -->
+          </div>
+
+          <!-- Onglet Statistiques -->
+          <div id="stats-tab" class="tab-content">
+            <!-- Contenu vide pour l'instant -->
+          </div>
+
+          <!-- Onglet Galerie -->
+          <div id="gallery-tab" class="tab-content">
+            <!-- Contenu vide pour l'instant -->
+          </div>
+
+          <!-- Onglet Alternatives -->
+          <div id="alternatives-tab" class="tab-content">
+            <!-- Contenu vide pour l'instant -->
+          </div>
+        </div>
+      </div>
+    `;
+    
+    detailsContainer.classList.remove('hidden');
+    
+    // Ajouter les événements pour les onglets
+    const tabButtons = detailsContainer.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetTab = e.target.dataset.tab;
+        
+        // Mettre à jour les boutons
+        tabButtons.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // Mettre à jour le contenu
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById(`${targetTab}-tab`).classList.add('active');
+        
+        // Réinitialiser les événements de copie si on est sur l'onglet bonus
+        if (targetTab === 'bonus') {
+          initCopyButtons();
+        }
+      });
+    });
+    
+    // Initialiser les boutons de copie
+    function initCopyButtons() {
+      const copyButtons = detailsContainer.querySelectorAll('.copy-btn');
+      copyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const code = button.dataset.code;
+          const codeId = button.dataset.codeId;
+          const codeElement = document.getElementById(codeId);
+          
+          navigator.clipboard.writeText(code).then(() => {
+            const originalText = codeElement.textContent;
+            codeElement.textContent = 'Copié !';
+            codeElement.classList.add('text-green-600');
+            
+            button.innerHTML = `
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            `;
+            
+            setTimeout(() => {
+              codeElement.textContent = originalText;
+              codeElement.classList.remove('text-green-600');
+              button.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              `;
+            }, 2000);
+          });
+        });
+      });
+    }
+  }
+
+  // Au chargement de la page
+  document.addEventListener('DOMContentLoaded', () => {
+    const logoButtons = document.querySelectorAll('.casino-logo-btn');
+    const detailsContainer = document.getElementById('casino-details');
+    const searchInput = document.getElementById('casino-search');
+    
+    // Afficher 1xbet par défaut
+    showCasinoDetails(casinosData['1xbet']);
+    
+    // Gestion du clic sur les logos
+    logoButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const casinoId = button.dataset.casinoId;
+        const casinoData = casinosData[casinoId];
+        
+        if (!casinoData) return;
+        
+        // Mettre à jour les styles des boutons
+        logoButtons.forEach(btn => {
+          btn.classList.remove('active');
+          btn.classList.add('inactive');
+        });
+        button.classList.remove('inactive');
+        button.classList.add('active');
+        
+        // Afficher les détails
+        showCasinoDetails(casinoData);
+      });
+    });
+    
+    // Fonction de recherche
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      
+      logoButtons.forEach(button => {
+        const casinoName = button.dataset.casinoName;
+        if (casinoName.includes(searchTerm) || searchTerm === '') {
+          button.style.display = 'block';
+        } else {
+          button.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+  
+  .tab-btn {
+    @apply pb-4 px-2 font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent transition-colors whitespace-nowrap;
+  }
+  
+  .tab-btn.active {
+    @apply text-gray-900 border-blue-600;
+  }
+</style>

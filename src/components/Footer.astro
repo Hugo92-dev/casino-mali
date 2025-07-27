@@ -1,0 +1,38 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-800 text-white py-8 mt-12">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">Casino Mali</h3>
+        <p class="text-gray-400">
+          Votre guide des meilleurs casinos en ligne au Mali. Comparez, choisissez et jouez en toute sécurité.
+        </p>
+      </div>
+      
+      <div>
+        <h4 class="font-semibold mb-3">Liens utiles</h4>
+        <ul class="space-y-2 text-gray-400">
+          <li><a href="/" class="hover:text-white">Accueil</a></li>
+          <li><a href="/blog" class="hover:text-white">Blog</a></li>
+          <li><a href="#" class="hover:text-white">Jeu responsable</a></li>
+          <li><a href="#" class="hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="font-semibold mb-3">Avertissement</h4>
+        <p class="text-gray-400 text-sm">
+          Les jeux d'argent sont interdits aux mineurs. Jouez avec modération. 
+          Ce site est à but informatif uniquement.
+        </p>
+      </div>
+    </div>
+    
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+      <p>&copy; {currentYear} Casino Mali. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
